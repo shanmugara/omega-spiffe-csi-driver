@@ -1,0 +1,14 @@
+# Cluster-scoped, one per cluster - do not install this chart more than
+# once per cluster, the CSIDriver name is fixed by the SPIFFE project.
+apiVersion: storage.k8s.io/v1
+kind: CSIDriver
+metadata:
+  name: csi.spiffe.io
+  labels:
+    {{- include "omega-spiffe-csi-driver.labels" . | nindent 4 }}
+spec:
+  attachRequired: false
+  fsGroupPolicy: None
+  podInfoOnMount: true
+  volumeLifecycleModes:
+    - Ephemeral

@@ -1,0 +1,31 @@
+# Default values for omega-spiffe-csi-driver.
+
+image:
+  repository: ghcr.io/spiffe/spiffe-csi-driver
+  tag: "0.2.6"
+  pullPolicy: IfNotPresent
+
+nodeDriverRegistrar:
+  image:
+    repository: registry.k8s.io/sig-storage/csi-node-driver-registrar
+    tag: "v2.6.0"
+    pullPolicy: IfNotPresent
+
+serviceAccount:
+  create: true
+  name: spiffe-csi-driver
+
+# Must match the omega-spire-agent chart's agent socket hostPath exactly -
+# this is how the CSI driver reaches the SPIRE Agent's Workload API socket.
+agentSocketDir: /run/secrets/workload-spiffe-uds
+
+tolerations:
+  - key: node-role.kubernetes.io/control-plane
+    operator: Exists
+    effect: NoSchedule
+
+nodeSelector: {}
+
+affinity: {}
+
+resources: {}
